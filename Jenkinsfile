@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     options {
-        timestamps()
         ansiColor('xterm')
         skipDefaultCheckout(true)
     }
@@ -26,7 +25,7 @@ pipeline {
 
         stage('Run Visual Tests') {
             steps {
-                sh './gradlew clean test allureReport --no-daemon'
+                sh './gradlew clean test --no-daemon'
             }
         }
     }
@@ -37,8 +36,13 @@ pipeline {
 
             archiveArtifacts artifacts: 'artifacts/visual/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/reports/tests/test/**/*', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'build/reports/allure-report/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/allure-results/**/*', allowEmptyArchive: true
+
+            allure(
+                results: [[path: 'build/allure-results']],
+                commandline: 'allure',
+                reportBuildPolicy: 'ALWAYS'
+            )
         }
     }
 }

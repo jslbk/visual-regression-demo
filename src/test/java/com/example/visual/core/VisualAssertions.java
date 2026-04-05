@@ -17,22 +17,18 @@ public final class VisualAssertions {
 
         writeBytes(actualPath, actualScreenshotBytes);
         AllureAttachments.attachPng("Actual screenshot", actualScreenshotBytes);
-        AllureAttachments.addArtifactLink("Actual file", actualPath);
 
         if (!Files.exists(baselinePath) || VisualTestConfig.updateBaseline()) {
             writeBytes(baselinePath, actualScreenshotBytes);
             AllureAttachments.attachText("Visual result", "Baseline created or refreshed for snapshot: " + snapshotName);
             AllureAttachments.attachIfExists("Baseline screenshot", baselinePath);
-            AllureAttachments.addArtifactLink("Baseline file", baselinePath);
             return;
         }
 
         ImageComparisonResult result = ImageDiffUtils.compare(baselinePath, actualPath, diffPath);
-        AllureAttachments.attachIfExists("Baseline screenshot", baselinePath);
-        AllureAttachments.attachIfExists("Diff screenshot", diffPath);
-        AllureAttachments.addArtifactLink("Baseline file", baselinePath);
-        AllureAttachments.addArtifactLink("Diff file", diffPath);
-        AllureAttachments.attachText("Visual summary", visualSummary(snapshotName, baselinePath, actualPath, diffPath, result));
+        AllureAttachments.attachIfExists("Expected", baselinePath);
+        AllureAttachments.attachIfExists("Actual", actualPath);
+        AllureAttachments.attachIfExists("Diff", diffPath);
 
         Assertions.assertFalse(
                 result.exceeds(VisualTestConfig.mismatchThresholdPercent()),

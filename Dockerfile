@@ -36,4 +36,12 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN jenkins-plugin-cli --plugins \
+    allure-jenkins-plugin \
+    workflow-aggregator \
+    git \
+    junit
+
+USER jenkins
+
 USER root

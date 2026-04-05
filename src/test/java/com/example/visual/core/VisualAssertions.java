@@ -6,21 +6,17 @@ import io.qameta.allure.Allure;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public final class VisualAssertions {
-
-    private VisualAssertions() {
-    }
 
     public static void assertScreenshotMatches(String snapshotName, byte[] actualScreenshotBytes) {
         Path baselinePath = VisualTestConfig.baselineDir().resolve(snapshotName + ".png");
         Path actualPath = VisualTestConfig.actualDir().resolve(snapshotName + ".png");
         Path diffPath = VisualTestConfig.diffDir().resolve(snapshotName + ".png");
 
-        double allowedDiffPercent = VisualTestConfig.mismatchThresholdPercent();
+        long allowedMismatchPixels = 2;
 
         writeBytes(actualPath, actualScreenshotBytes);
 
@@ -38,13 +34,13 @@ public final class VisualAssertions {
         }
 
         ImageComparisonResult result = ImageDiffUtils.compare(baselinePath, actualPath, diffPath);
-        double actualDiffPercent = result.mismatchPercent();
+        long actualMismatchPixels = result.mismatchedPixels();
 
-        if (actualDiffPercent > allowedDiffPercent) {
+        if (actualMismatchPixels > allowedMismatchPixels) {
             Allure.step("Visual mismatch: " + snapshotName, () -> {
                 AllureAttachments.attachText(
                         "Mismatch summary",
-                        visualSummary(snapshotName, baselinePath, actualPath, diffPath, result, allowedDiffPercent)
+                        visualSummary(snapshotName, baselinePath, actualPath, diffPath, result, allowedMismatchPixels)
                 );
 
                 AllureAttachments.attachIfExists("Expected screenshot", baselinePath);
@@ -53,20 +49,11 @@ public final class VisualAssertions {
             });
 
             fail(String.format(
-                    "Visual mismatch for '%s': actual diff %.4f%% exceeds allowed %.4f%%",
+                    "Visual mismatch for '%s': %d pixels differ, allowed %d pixels",
                     snapshotName,
-                    actualDiffPercent,
-                    allowedDiffPercent
+                    actualMismatchPixels,
+                    allowedMismatchPixels
             ));
-        } else {
-            Allure.step("Visual comparison passed: " + snapshotName, () -> {
-                AllureAttachments.attachText(
-                        "Comparison summary",
-                        visualSummary(snapshotName, baselinePath, actualPath, diffPath, result, allowedDiffPercent)
-                );
-                AllureAttachments.attachIfExists("Expected screenshot", baselinePath);
-                AllureAttachments.attachIfExists("Actual screenshot", actualPath);
-            });
         }
     }
 
@@ -76,22 +63,23 @@ public final class VisualAssertions {
             Path actualPath,
             Path diffPath,
             ImageComparisonResult result,
-            double allowedDiffPercent
+            long allowedMismatchPixels
     ) {
         return """
-                Snapshot: %s
-                Allowed mismatch: %.4f%%
-                Actual mismatch: %.4f%%
-                Pixels mismatched: %d / %d
-                Baseline: %s
-                Actual: %s
-                Diff: %s
-                """.formatted(
+            Snapshot: %s
+            Allowed mismatch: %d pixels
+            Actual mismatch: %d pixels
+            Total pixels: %d
+            Mismatch percent: %.4f%%
+            Baseline: %s
+            Actual: %s
+            Diff: %s
+            """.formatted(
                 snapshotName,
-                allowedDiffPercent,
-                result.mismatchPercent(),
+                allowedMismatchPixels,
                 result.mismatchedPixels(),
                 result.totalPixels(),
+                result.mismatchPercent(),
                 baselinePath,
                 actualPath,
                 diffPath

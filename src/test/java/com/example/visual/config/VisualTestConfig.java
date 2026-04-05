@@ -6,9 +6,6 @@ import java.nio.file.Paths;
 public final class VisualTestConfig {
     private static final String DEFAULT_RELATIVE_PAGE = "src/test/resources/demo-page/index.html";
 
-    private VisualTestConfig() {
-    }
-
     public static int viewportWidth() {
         return Integer.parseInt(System.getProperty("visual.viewport.width", "1440"));
     }

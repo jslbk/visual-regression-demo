@@ -1,7 +1,8 @@
 package com.example.visual.core;
 
-import io.qameta.allure.Attachment;
+import io.qameta.allure.Allure;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +13,7 @@ public final class AllureAttachments {
         if (path == null || !Files.exists(path)) {
             return;
         }
+
         try {
             byte[] bytes = Files.readAllBytes(path);
             attachPng(name, bytes);
@@ -20,13 +22,24 @@ public final class AllureAttachments {
         }
     }
 
-    @Attachment(value = "{name}", type = "image/png")
-    public static byte[] attachPng(String name, byte[] content) {
-        return content;
+    public static void attachPng(String name, byte[] content) {
+        if (content == null || content.length == 0) {
+            return;
+        }
+
+        Allure.addAttachment(
+                name,
+                "image/png",
+                new ByteArrayInputStream(content),
+                ".png"
+        );
     }
 
-    @Attachment(value = "{name}", type = "text/plain")
-    public static String attachText(String name, String content) {
-        return content;
+    public static void attachText(String name, String content) {
+        Allure.addAttachment(
+                name,
+                "text/plain",
+                content == null ? "" : content
+        );
     }
 }

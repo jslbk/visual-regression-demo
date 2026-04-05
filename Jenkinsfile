@@ -20,15 +20,21 @@ pipeline {
             }
         }
 
+        stage('Prepare Gradle Wrapper') {
+            steps {
+                sh 'chmod +x gradlew'
+            }
+        }
+
         stage('Install Playwright Browser') {
             steps {
-                sh 'gradle installBrowsers'
+                sh './gradlew installBrowsers --no-daemon'
             }
         }
 
         stage('Run Visual Tests') {
             steps {
-                sh 'gradle clean test allureReport'
+                sh './gradlew clean test --no-daemon'
             }
         }
     }
@@ -38,13 +44,12 @@ pipeline {
             archiveArtifacts artifacts: 'artifacts/visual/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/reports/tests/test/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/reports/allure-report/**/*', allowEmptyArchive: true
+
             junit testResults: 'build/test-results/test/*.xml', allowEmptyResults: true
-            allure([
-                includeProperties: false,
-                jdk: '',
-                reportBuildPolicy: 'ALWAYS',
+
+            allure(
                 results: [[path: 'build/allure-results']]
-            ])
+            )
         }
     }
 }

@@ -34,22 +34,19 @@ pipeline {
 
         stage('Run Visual Tests') {
             steps {
-                sh './gradlew clean test --no-daemon'
+                sh './gradlew clean test allureReport --no-daemon'
             }
         }
     }
 
     post {
         always {
+            junit testResults: 'build/test-results/test/*.xml', allowEmptyResults: true
+
             archiveArtifacts artifacts: 'artifacts/visual/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/reports/tests/test/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/reports/allure-report/**/*', allowEmptyArchive: true
-
-            junit testResults: 'build/test-results/test/*.xml', allowEmptyResults: true
-
-            allure(
-                results: [[path: 'build/allure-results']]
-            )
+            archiveArtifacts artifacts: 'build/allure-results/**/*', allowEmptyArchive: true
         }
     }
 }

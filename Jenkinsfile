@@ -33,16 +33,14 @@ pipeline {
     post {
         always {
             junit testResults: 'build/test-results/test/*.xml', allowEmptyResults: true
-
             archiveArtifacts artifacts: 'artifacts/visual/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/reports/tests/test/**/*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'build/allure-results/**/*', allowEmptyArchive: true
 
-            allure(
+            allure([
                 results: [[path: 'build/allure-results']],
-                commandline: 'allure',
-                reportBuildPolicy: 'ALWAYS'
-            )
+                commandline: 'allure'
+            ])
         }
     }
 }

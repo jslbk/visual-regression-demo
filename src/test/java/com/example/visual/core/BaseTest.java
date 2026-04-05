@@ -1,6 +1,7 @@
 package com.example.visual.core;
 
-import com.example.visual.config.VisualTestConfig;
+import com.example.visual.config.TestConfig;
+import com.example.visual.config.TestConfigProvider;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
@@ -16,6 +17,8 @@ public abstract class BaseTest {
     protected static Browser browser;
     protected BrowserContext context;
     protected Page page;
+
+    private static final TestConfig CONFIG = TestConfigProvider.getConfig();
 
     @BeforeAll
     static void setUpRuntime() {
@@ -33,7 +36,7 @@ public abstract class BaseTest {
     @BeforeEach
     void setUpTest() {
         context = browser.newContext(new Browser.NewContextOptions()
-                .setViewportSize(VisualTestConfig.viewportWidth(), VisualTestConfig.viewportHeight())
+                .setViewportSize(CONFIG.viewportWidth(), CONFIG.viewportHeight())
                 .setDeviceScaleFactor(1.0)
         );
         page = context.newPage();

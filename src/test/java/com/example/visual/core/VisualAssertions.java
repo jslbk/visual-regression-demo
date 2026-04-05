@@ -1,26 +1,30 @@
 package com.example.visual.core;
 
-import com.example.visual.config.VisualTestConfig;
+import com.example.visual.config.TestConfig;
+import com.example.visual.config.TestConfigProvider;
 import io.qameta.allure.Allure;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public final class VisualAssertions {
 
+    private static final TestConfig CONFIG = TestConfigProvider.getConfig();
+
     public static void assertScreenshotMatches(String snapshotName, byte[] actualScreenshotBytes) {
-        Path baselinePath = VisualTestConfig.baselineDir().resolve(snapshotName + ".png");
-        Path actualPath = VisualTestConfig.actualDir().resolve(snapshotName + ".png");
-        Path diffPath = VisualTestConfig.diffDir().resolve(snapshotName + ".png");
+        Path baselinePath = Paths.get(CONFIG.baselineDir()).resolve(snapshotName + ".png");
+        Path actualPath = Paths.get(CONFIG.actualDir()).resolve(snapshotName + ".png");
+        Path diffPath = Paths.get(CONFIG.diffDir()).resolve(snapshotName + ".png");
 
         long allowedMismatchPixels = 2;
 
         writeBytes(actualPath, actualScreenshotBytes);
 
-        if (!Files.exists(baselinePath) || VisualTestConfig.updateBaseline()) {
+        if (!Files.exists(baselinePath) || CONFIG.updateBaseline()) {
             writeBytes(baselinePath, actualScreenshotBytes);
 
             Allure.step("Baseline prepared: " + snapshotName, () -> {

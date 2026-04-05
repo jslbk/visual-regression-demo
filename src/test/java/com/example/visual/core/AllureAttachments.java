@@ -18,7 +18,7 @@ public final class AllureAttachments {
             byte[] bytes = Files.readAllBytes(path);
             attachPng(name, bytes);
         } catch (IOException e) {
-            attachText(name + " (attachment error)", e.getMessage());
+            attachText("Failed to attach image " + name, e.getMessage());
         }
     }
 

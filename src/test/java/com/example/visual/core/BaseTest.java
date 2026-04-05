@@ -18,7 +18,7 @@ public abstract class BaseTest {
     protected Page page;
 
     @BeforeAll
-    static void setUp() {
+    static void setUpRuntime() {
         try {
             playwright = Playwright.create();
             browser = playwright.chromium().launch(
@@ -50,7 +50,7 @@ public abstract class BaseTest {
     }
 
     @AfterAll
-    static void tearDown() {
+    static void tearDownRuntime() {
         if (browser != null) {
             browser.close();
         }

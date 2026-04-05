@@ -38,11 +38,6 @@ public final class VisualAssertions {
 
         if (actualMismatchPixels > allowedMismatchPixels) {
             Allure.step("Visual mismatch: " + snapshotName, () -> {
-                AllureAttachments.attachText(
-                        "Mismatch summary",
-                        visualSummary(snapshotName, baselinePath, actualPath, diffPath, result, allowedMismatchPixels)
-                );
-
                 AllureAttachments.attachIfExists("Expected screenshot", baselinePath);
                 AllureAttachments.attachIfExists("Actual screenshot", actualPath);
                 AllureAttachments.attachIfExists("Diff screenshot", diffPath);
@@ -55,35 +50,6 @@ public final class VisualAssertions {
                     allowedMismatchPixels
             ));
         }
-    }
-
-    private static String visualSummary(
-            String snapshotName,
-            Path baselinePath,
-            Path actualPath,
-            Path diffPath,
-            ImageComparisonResult result,
-            long allowedMismatchPixels
-    ) {
-        return """
-            Snapshot: %s
-            Allowed mismatch: %d pixels
-            Actual mismatch: %d pixels
-            Total pixels: %d
-            Mismatch percent: %.4f%%
-            Baseline: %s
-            Actual: %s
-            Diff: %s
-            """.formatted(
-                snapshotName,
-                allowedMismatchPixels,
-                result.mismatchedPixels(),
-                result.totalPixels(),
-                result.mismatchPercent(),
-                baselinePath,
-                actualPath,
-                diffPath
-        );
     }
 
     private static void writeBytes(Path targetPath, byte[] bytes) {

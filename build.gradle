@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure-adapter' version '3.0.2'
+    id 'io.qameta.allure-report' version '3.0.2'
+}
+
+group = 'com.example'
+version = '1.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    playwrightVersion = '1.58.0'
+    allureVersion = '2.30.0'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    testImplementation platform("org.junit:junit-bom:6.0.3")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+
+    testImplementation "com.microsoft.playwright:playwright:${playwrightVersion}"
+    testImplementation "io.qameta.allure:allure-junit5:${allureVersion}"
+
+    testRuntimeOnly "org.slf4j:slf4j-simple:2.0.17"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+allure {
+    adapter {
+        autoconfigure.set(true)
+        aspectjWeaver.set(false)
+
+        frameworks {
+            junit5 {
+                enabled.set(true)
+            }
+        }
+    }
+
+    report {
+        version.set(allureVersion)
+    }
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    environment 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD', '1'
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+    systemProperty 'file.encoding', 'UTF-8'
+}

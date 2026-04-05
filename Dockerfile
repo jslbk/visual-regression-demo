@@ -43,5 +43,3 @@ RUN jenkins-plugin-cli --plugins \
     junit
 
 USER jenkins
-
-USER root

@@ -30,17 +30,12 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            junit testResults: 'build/test-results/test/*.xml', allowEmptyResults: true
-            archiveArtifacts artifacts: 'artifacts/visual/**/*', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'build/reports/tests/test/**/*', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'build/allure-results/**/*', allowEmptyArchive: true
-
-            allure([
-                results: [[path: 'build/allure-results']],
-                commandline: 'Allure'
-            ])
-        }
-    }
+   post {
+       always {
+           allure([
+               includeProperties: false,
+               results: [[path: 'build/allure-results']]
+           ])
+       }
+   }
 }

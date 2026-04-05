@@ -14,21 +14,13 @@ pipeline {
             }
         }
 
-        stage('Verify Java') {
+        stage('Prepare Test Environment') {
             steps {
-                sh 'java -version'
-            }
-        }
-
-        stage('Prepare Gradle Wrapper') {
-            steps {
-                sh 'chmod +x gradlew'
-            }
-        }
-
-        stage('Install Playwright Browser') {
-            steps {
-                sh './gradlew installBrowsers --no-daemon'
+                sh '''
+                    java -version
+                    chmod +x gradlew
+                    ./gradlew installBrowsers --no-daemon
+                '''
             }
         }
 

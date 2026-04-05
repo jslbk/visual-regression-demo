@@ -13,6 +13,7 @@ repositories {
 
 ext {
     playwrightVersion = '1.58.0'
+    junitVersion = '6.0.3'
     allureVersion = '2.30.0'
 }
 
@@ -23,17 +24,21 @@ java {
 }
 
 dependencies {
-    testImplementation platform("org.junit:junit-bom:6.0.3")
-    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation platform("io.qameta.allure:allure-bom:${allureVersion}")
 
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation "com.microsoft.playwright:playwright:${playwrightVersion}"
-    testImplementation "io.qameta.allure:allure-junit5:${allureVersion}"
+    testImplementation 'io.qameta.allure:allure-junit5'
 
-    testRuntimeOnly "org.slf4j:slf4j-simple:2.0.17"
+    testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.17'
 }
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+
+    environment 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD', '1'
+    systemProperty 'file.encoding', 'UTF-8'
 
     testLogging {
         events 'passed', 'skipped', 'failed'
@@ -42,8 +47,6 @@ tasks.withType(Test).configureEach {
         showCauses true
         showStackTraces true
     }
-
-    systemProperty 'file.encoding', 'UTF-8'
 }
 
 allure {
@@ -63,15 +66,10 @@ allure {
     }
 }
 
-tasks.withType(Test).configureEach {
-    useJUnitPlatform()
-    environment 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD', '1'
-    testLogging {
-        events 'passed', 'skipped', 'failed'
-        exceptionFormat 'full'
-        showExceptions true
-        showCauses true
-        showStackTraces true
-    }
-    systemProperty 'file.encoding', 'UTF-8'
+tasks.register('installBrowsers', JavaExec) {
+    group = 'playwright'
+    description = 'Installs Playwright browser binaries required for test execution.'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass.set('com.microsoft.playwright.CLI')
+    args 'install', 'chromium'
 }

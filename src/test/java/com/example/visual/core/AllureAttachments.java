@@ -3,6 +3,7 @@ package com.example.visual.core;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,6 +35,15 @@ public final class AllureAttachments {
     public static void addArtifactLink(String label, Path path) {
         if (path != null) {
             Allure.link(label, path.toUri().toString());
+        }
+    }
+
+    public static void attachImage(String name, Path imagePath) {
+        try {
+            byte[] content = Files.readAllBytes(imagePath);
+            Allure.addAttachment(name, "image/png", new ByteArrayInputStream(content), ".png");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to attach image: " + imagePath, e);
         }
     }
 }

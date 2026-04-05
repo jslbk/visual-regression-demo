@@ -24,8 +24,7 @@ public final class VisualAssertions {
             writeBytes(baselinePath, actualScreenshotBytes);
 
             Allure.step("Baseline prepared: " + snapshotName, () -> {
-                AllureAttachments.attachText(
-                        "Visual result",
+                AllureAttachments.attachText("Visual result",
                         "Baseline created or refreshed for snapshot: " + snapshotName
                 );
                 AllureAttachments.attachIfExists("Baseline screenshot", baselinePath);
@@ -37,14 +36,11 @@ public final class VisualAssertions {
         long actualMismatchPixels = result.mismatchedPixels();
 
         if (actualMismatchPixels > allowedMismatchPixels) {
-            Allure.step("Visual mismatch: " + snapshotName, () -> {
-                AllureAttachments.attachIfExists("Expected screenshot", baselinePath);
-                AllureAttachments.attachIfExists("Actual screenshot", actualPath);
-                AllureAttachments.attachIfExists("Diff screenshot", diffPath);
-            });
+            AllureAttachments.attachIfExists("Expected", baselinePath);
+            AllureAttachments.attachIfExists("Actual", actualPath);
+            AllureAttachments.attachIfExists("Difference", diffPath);
 
-            fail(String.format(
-                    "Visual mismatch for '%s': %d pixels differ, allowed %d pixels",
+            fail(String.format("Visual mismatch for '%s': %d pixels differ, allowed %d pixels",
                     snapshotName,
                     actualMismatchPixels,
                     allowedMismatchPixels

@@ -39,7 +39,7 @@ pipeline {
 
             allure([
                 results: [[path: 'build/allure-results']],
-                commandline: 'allure'
+                commandline: 'Allure'
             ])
         }
     }

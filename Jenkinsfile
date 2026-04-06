@@ -15,11 +15,11 @@ pipeline {
 
         stage('Prepare Test Environment') {
             steps {
-                sh '''
-                    java -version
-                    chmod +x gradlew
-                    ./gradlew installBrowsers --no-daemon
-                '''
+                sh """
+                  java -version
+                  chmod +x gradlew
+                  ./gradlew installBrowsers --no-daemon -Dvisual.browser=${params.BROWSER}
+                """
             }
         }
 

@@ -1,13 +1,19 @@
 package com.example.visual.pages;
 
-import com.example.visual.config.VisualTestConfig;
+import com.example.visual.config.TestConfig;
+import com.example.visual.config.TestConfigProvider;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+
+import java.nio.file.Paths;
 
 public class DemoPage {
     private final Page page;
     private final Locator heroCard;
     private final Locator featureBadge;
+
+    private static final TestConfig CONFIG = TestConfigProvider.getConfig();
+
 
     public DemoPage(Page page) {
         this.page = page;
@@ -15,8 +21,17 @@ public class DemoPage {
         this.featureBadge = page.locator(".feature-badge").first();
     }
 
+//    public void open() {
+//        page.navigate(CONFIG.demoRelativePage());
+//    }
+
     public void open() {
-        page.navigate(VisualTestConfig.demoPageUrl());
+        String url = Paths.get(CONFIG.demoRelativePage())
+                .toAbsolutePath()
+                .toUri()
+                .toString();
+
+        page.navigate(url);
     }
 
     public void waitForStableUi() {

@@ -25,7 +25,11 @@ pipeline {
 
         stage('Run Visual Tests') {
             steps {
-                sh './gradlew clean test --no-daemon'
+              sh """
+                ./gradlew clean test \
+                  -Dvisual.profile=${params.PROFILE} \
+                  -Dvisual.browser=${params.BROWSER} \
+              """
             }
         }
     }

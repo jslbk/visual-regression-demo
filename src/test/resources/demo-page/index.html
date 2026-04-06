@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visual Demo Page</title>
+
     <style>
         :root {
           --bg: #f6f7fb;
@@ -12,7 +13,12 @@
           --muted: #6b7280;
           --accent: #111827;
           --border: #e5e7eb;
-          --success: #dcfce7;
+
+          --purple-bg: #eef2ff;
+          --purple-text: #3730a3;
+
+          --badge-bg: #dcfce7;
+          --badge-text: #166534;
         }
 
         * {
@@ -24,10 +30,15 @@
           font-family: Inter, Arial, sans-serif;
           background: linear-gradient(180deg, #f9fafb 0%, #eef2ff 100%);
           color: var(--text);
+
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
         }
 
         .page {
-          min-height: 100vh;
+          flex: 1;
+          width: 100%;
           max-width: 1120px;
           margin: 0 auto;
           padding: 40px 24px 80px;
@@ -55,8 +66,8 @@
           gap: 8px;
           padding: 8px 12px;
           border-radius: 999px;
-          background: #eef2ff;
-          color: #3730a3;
+          background: var(--purple-bg);
+          color: var(--purple-text);
           font-size: 12px;
           font-weight: 700;
           letter-spacing: .04em;
@@ -127,21 +138,10 @@
           border-radius: 50%;
         }
 
-        .preview-bars .dot:nth-child(1) {
-          background: #ff5f57;
-        }
+        .preview-bars .dot:nth-child(1) { background: #ff5f57; }
+        .preview-bars .dot:nth-child(2) { background: #febc2e; }
+        .preview-bars .dot:nth-child(3) { background: #28c840; }
 
-        /* red */
-        .preview-bars .dot:nth-child(2) {
-          background: #febc2e;
-        }
-
-        /* yellow */
-        .preview-bars .dot:nth-child(3) {
-          background: #28c840;
-        }
-
-        /* green */
         .line {
           height: 10px;
           border-radius: 999px;
@@ -149,17 +149,9 @@
           margin-bottom: 10px;
         }
 
-        .line.w80 {
-          width: 80%;
-        }
-
-        .line.w55 {
-          width: 55%;
-        }
-
-        .line.w35 {
-          width: 35%;
-        }
+        .line.w80 { width: 80%; }
+        .line.w55 { width: 55%; }
+        .line.w35 { width: 35%; }
 
         .grid {
           display: grid;
@@ -178,16 +170,28 @@
           display: inline-block;
           width: fit-content;
           margin-top: 14px;
-          padding: 10px 14px;
+          padding: 8px 12px;
+
           border-radius: 999px;
           font-size: 12px;
           font-weight: 700;
-          background: var(--success);
-          color: #166534;
+
+          background: var(--badge-bg);
+          color: var(--badge-text);
+
           overflow: hidden;
         }
 
-        /* subtle shine */
+        /* soft highlight */
+        .feature-badge::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 30%, rgba(255,255,255,0.5), transparent 50%);
+          pointer-events: none;
+        }
+
+        /* shine animation */
         .feature-badge::after {
           content: "";
           position: absolute;
@@ -195,72 +199,160 @@
           left: -120%;
           width: 50%;
           height: 100%;
-          background: linear-gradient(120deg,
-              transparent,
-              rgba(255, 255, 255, 0.35),
-              transparent);
+
+          background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(255, 255, 255, 0.6),
+            transparent
+          );
+
           transform: skewX(-20deg);
-          animation: shine 5s infinite;
+          animation: shine 4.8s infinite;
+        }
+
+        .footer {
+          width: 100%;
+          text-align: center;
+          font-size: 12px;
+          color: #9ca3af;
+          padding-bottom: 20px;
+        }
+
+        .footer a {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        .footer a:hover {
+          text-decoration: underline;
         }
 
         @keyframes shine {
-          0% {
-            left: -120%;
+          0%   { left: -120%; }
+          65%  { left: 120%; }
+          100% { left: 120%; }
+        }
+
+        @media (max-width: 1024px) {
+          .hero {
+            grid-template-columns: 1fr;
           }
 
-          70% {
-            left: 120%;
+          .grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .page {
+            padding: 24px 16px 48px;
           }
 
-          100% {
-            left: 120%;
+          .hero,
+          .grid,
+          .stats {
+            grid-template-columns: 1fr;
+          }
+
+          .card {
+            padding: 22px;
+          }
+
+          h1 {
+            font-size: 32px;
+          }
+
+          .preview-screen {
+            min-height: 220px;
           }
         }
     </style>
 </head>
+
 <body>
 <main class="page">
     <section class="hero">
+
         <div class="card">
             <div class="eyebrow">Visual Regression Demo</div>
+
             <h1>Fast screenshot checks for stable UI changes</h1>
-            <p> This local page exists only to give the Java visual regression tests a deterministic target. It is intentionally static, animation-free and baseline-friendly. </p>
+
+            <p>
+                This local page exists only to give the Java visual regression tests
+                a controlled and predictable target. The layout is intentionally simple,
+                low-noise and suitable for stable screenshot comparisons.
+            </p>
+
             <div class="stats">
-                <div class="stat"><strong>Chromium</strong><span>Playwright-driven browser</span></div>
-                <div class="stat"><strong>Pixel Diff</strong><span>Pure Java comparison</span></div>
-                <div class="stat"><strong>#mistakehere</strong><span>Simple CI-friendly execution</span></div>
+                <div class="stat">
+                    <strong>Chromium</strong>
+                    <span>Playwright-driven browser</span>
+                </div>
+
+                <div class="stat">
+                    <strong>Pixel Diff</strong>
+                    <span>Pure Java comparison</span>
+                </div>
+
+                <div class="stat">
+                    <strong>JUnit</strong>
+                    <span>Simple CI-friendly execution</span>
+                </div>
             </div>
         </div>
+
         <div class="card preview">
             <div>
                 <div class="eyebrow">Preview Block</div>
+
                 <div class="preview-screen">
                     <div class="preview-bars">
                         <div class="dot"></div>
                         <div class="dot"></div>
                         <div class="dot"></div>
                     </div>
+
                     <div class="line w80"></div>
                     <div class="line w55"></div>
                     <div class="line w35"></div>
                 </div>
-            </div><span class="feature-badge">Baseline-friendly layout</span>
+            </div>
+
+            <span class="feature-badge">Stable screenshot target</span>
         </div>
+
     </section>
+
     <section class="grid">
+
         <div class="card feature">
             <h3>Page screenshot</h3>
-            <p>Capture the full page or a focused component and compare it to the baseline image.</p>
+            <p>
+                Capture the full page or a focused component and compare it to the baseline image.
+            </p>
         </div>
+
         <div class="card feature">
             <h3>Mask unstable zones</h3>
-            <p>Hide dynamic areas before taking a screenshot to remove noise from test runs.</p>
+            <p>
+                Hide dynamic areas before taking a screenshot to remove noise from test runs.
+            </p>
         </div>
+
         <div class="card feature">
             <h3>Readable artifacts</h3>
-            <p>Store expected, actual and diff images in folders that Jenkins can archive.</p>
+            <p>
+                Store expected, actual and diff images in folders that Jenkins can archive.
+            </p>
         </div>
+
     </section>
 </main>
+
+<footer class="footer">
+    <a href="https://github.com/jslbk" target="_blank">github.com/jslbk</a>
+</footer>
 </body>
 </html>

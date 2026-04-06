@@ -4,11 +4,21 @@ import org.aeonbits.owner.Config;
 
 @Config.Sources({
         "system:properties",
-        "system:env",
-        "classpath:visual.properties",
-        "classpath:${visual.env}.properties"
+        "classpath:visual.properties"
 })
 public interface TestConfig extends Config {
+
+    @Key("visual.profile")
+    @DefaultValue("desktop")
+    String profile();
+
+    @Key("visual.browser")
+    @DefaultValue("chromium")
+    String browser();
+
+    @Key("visual.headless")
+    @DefaultValue("true")
+    boolean headless();
 
     @Key("visual.viewport.width")
     @DefaultValue("1440")
@@ -44,20 +54,4 @@ public interface TestConfig extends Config {
     @Key("visual.demo.relative.page")
     @DefaultValue("src/test/resources/demo-page/index.html")
     String demoRelativePage();
-
-    @Key("visual.browser")
-    @DefaultValue("chromium")
-    String browser();
-
-    @Config.Key("visual.headless")
-    @DefaultValue("true")
-    boolean headless();
-
-    @Key("visual.snapshot.full.page")
-    @DefaultValue("true")
-    boolean fullPageScreenshot();
-
-    @Key("visual.env")
-    @DefaultValue("local")
-    String env();
 }

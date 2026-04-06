@@ -68,10 +68,17 @@ allure {
     }
 }
 
-tasks.register('installBrowsers', JavaExec) {
-    group = 'playwright'
-    description = 'Install Playwright browser binaries required for test execution.'
-    classpath = sourceSets.test.runtimeClasspath
-    mainClass.set('com.microsoft.playwright.CLI')
-    args 'install', 'chromium'
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+
+    environment 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD', '1'
+    systemProperty 'file.encoding', 'UTF-8'
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
 }

@@ -99,10 +99,9 @@ public abstract class BaseTest {
         return switch (browserName.trim().toLowerCase()) {
             case "chromium" -> playwright.chromium();
             case "firefox" -> playwright.firefox();
-            case "webkit" -> playwright.webkit();
             default -> throw new IllegalArgumentException(
                     "Unsupported visual.browser: " + browserName +
-                            ". Supported values: chromium, firefox, webkit"
+                            ". Supported values: chromium, firefox"
             );
         };
     }

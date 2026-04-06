@@ -49,7 +49,6 @@ public final class VisualAssertions {
         }
 
         Allure.step("Visual comparison passed: " + snapshotName, () -> {
-            AllureAttachments.attachIfExists("Expected", baselinePath);
             AllureAttachments.attachIfExists("Actual", actualPath);
         });
     }

@@ -51,7 +51,6 @@ public abstract class BaseTest {
                 .setScreenSize(viewportWidth, viewportHeight)
                 .setDeviceScaleFactor(1.0)
                 .setHasTouch(profile.hasTouch())
-                .setIsMobile(profile.isMobile())
         );
 
         page = context.newPage();

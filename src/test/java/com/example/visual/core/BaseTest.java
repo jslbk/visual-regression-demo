@@ -50,7 +50,6 @@ public abstract class BaseTest {
                 .setViewportSize(viewportWidth, viewportHeight)
                 .setScreenSize(viewportWidth, viewportHeight)
                 .setDeviceScaleFactor(1.0)
-                .setHasTouch(profile.hasTouch())
         );
 
         page = context.newPage();
@@ -87,11 +86,11 @@ public abstract class BaseTest {
     }
 
     protected static int effectiveViewportWidth() {
-        return CONFIG.viewportWidth() > 0 ? CONFIG.viewportWidth() : profile.defaultWidth();
+        return CONFIG.viewportWidth() >= 0 ? CONFIG.viewportWidth() : profile.defaultWidth();
     }
 
     protected static int effectiveViewportHeight() {
-        return CONFIG.viewportHeight() > 0 ? CONFIG.viewportHeight() : profile.defaultHeight();
+        return CONFIG.viewportHeight() >= 0 ? CONFIG.viewportHeight() : profile.defaultHeight();
     }
 
     private static BrowserType resolveBrowserType(String browserName) {

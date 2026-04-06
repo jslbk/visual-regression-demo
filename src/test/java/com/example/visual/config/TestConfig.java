@@ -21,11 +21,11 @@ public interface TestConfig extends Config {
     boolean headless();
 
     @Key("visual.viewport.width")
-    @DefaultValue("1440")
+    @DefaultValue("-1")
     int viewportWidth();
 
     @Key("visual.viewport.height")
-    @DefaultValue("1100")
+    @DefaultValue("-1")
     int viewportHeight();
 
     @Key("visual.threshold.percent")

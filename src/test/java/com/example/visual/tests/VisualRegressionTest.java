@@ -27,6 +27,7 @@ class VisualRegressionTest extends BaseTest {
 
         byte[] screenshot = page.screenshot(new Page.ScreenshotOptions()
                 .setFullPage(true)
+                .setMask(List.of(demoPage.featureBadge()))
         );
 
         VisualAssertions.assertScreenshotMatches(

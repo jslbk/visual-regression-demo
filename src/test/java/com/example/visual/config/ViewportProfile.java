@@ -1,42 +1,30 @@
 package com.example.visual.config;
 
 public enum ViewportProfile {
-    DESKTOP("desktop", 1440, 1100, false, false),
-    TABLET("tablet", 834, 1112, true, false),
-    MOBILE("mobile", 390, 844, true, true);
+    DESKTOP("desktop", 1440, 1100),
+    TABLET("tablet", 834, 1112),
+    MOBILE("mobile", 390, 844);
 
+    public int defaultWidth() {
+        return width;
+    }
     private final String name;
-    private final int defaultWidth;
-    private final int defaultHeight;
-    private final boolean hasTouch;
-    private final boolean isMobile;
+    private final int width;
 
-    ViewportProfile(String name, int defaultWidth, int defaultHeight, boolean hasTouch, boolean isMobile) {
+    private final int height;
+
+    ViewportProfile(String name, int width, int height) {
         this.name = name;
-        this.defaultWidth = defaultWidth;
-        this.defaultHeight = defaultHeight;
-        this.hasTouch = hasTouch;
-        this.isMobile = isMobile;
+        this.width = width;
+        this.height = height;
     }
 
     public String nameValue() {
         return name;
     }
 
-    public int defaultWidth() {
-        return defaultWidth;
-    }
-
     public int defaultHeight() {
-        return defaultHeight;
-    }
-
-    public boolean hasTouch() {
-        return hasTouch;
-    }
-
-    public boolean isMobile() {
-        return isMobile;
+        return height;
     }
 
     public static ViewportProfile from(String value) {

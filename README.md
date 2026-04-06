@@ -3,7 +3,7 @@
 This project demonstrates a **Java-based visual regression testing framework** using Playwright, focused on **UI consistency validation**, **snapshot comparison**, and **CI execution with configurable parameters**.
 
 <p align="center">
-  <img src="media/Playwright-banner.png" alt="Project Banner" width="900"/>
+  <img src="media/Playwright-banner.png" alt="Project Banner" width="1080"/>
 </p>
 
 ---
@@ -88,7 +88,7 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Jenkins Job Configuration
 
 <p align="center">
-  <img src="media/Jenkins-params.png" width="700"/>
+  <img src="media/Jenkins-params.png" width="1080"/>
 </p>
 
 * Parameters are defined in Jenkins UI
@@ -109,7 +109,7 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Jenkins Pipeline Run
 
 <p align="center">
-  <img src="media/Jenkins-pipeline.png" width="800"/>
+  <img src="media/Jenkins-pipeline.png" width="1080"/>
 </p>
 
 * Build is triggered with selected parameters
@@ -121,7 +121,7 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Test Results (Allure Report)
 
 <p align="center">
-  <img src="media/Allure-success.png" width="800"/>
+  <img src="media/Allure-success.png" width="1080"/>
 </p>
 
 * Each test contains visual attachments
@@ -132,7 +132,7 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Visual Attachments in Allure
 
 <p align="center">
-  <img src="media/Allure-fail.png" width="800"/>
+  <img src="media/Allure-fail.png" width="1080"/>
 </p>
 
 Each failed test includes:

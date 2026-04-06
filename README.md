@@ -29,16 +29,13 @@ This project demonstrates a **Java-based visual regression testing framework** u
   <img src="media/icons/Allure.svg" width="40"/>
   <img src="media/icons/Jenkins.svg" width="40"/>
 </p>
+
 ---
 
 ## Test Execution Flow
 
-<p align="center">
-  <img src="media/flow.png" width="800"/>
-</p>
-
 1. Open target page using Playwright
-2. Apply configured viewport (profile)
+2. Apply configured viewport (screen resolution)
 3. Capture screenshot (actual)
 4. Load baseline image
 5. Compare images pixel-by-pixel
@@ -70,7 +67,7 @@ Run with custom parameters:
     * chromium
     * firefox
   
-* `visual.profile` (viewport presets)
+* `visual.profile` (screen resolutions)
     * desktop
     * tablet
     * mobile
@@ -91,7 +88,7 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Jenkins Job Configuration
 
 <p align="center">
-  <img src="media/jenkins-params.png" width="700"/>
+  <img src="media/Jenkins-params.png" width="700"/>
 </p>
 
 * Parameters are defined in Jenkins UI
@@ -112,11 +109,11 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Jenkins Pipeline Run
 
 <p align="center">
-  <img src="media/jenkins-run.png" width="800"/>
+  <img src="media/Jenkins-pipeline.png" width="800"/>
 </p>
 
 * Build is triggered with selected parameters
-* Tests run in выбранном браузере
+* Tests run in selected browser
 * Screenshots are generated during execution
 
 ---
@@ -124,7 +121,7 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Test Results (Allure Report)
 
 <p align="center">
-  <img src="media/allure-overview.png" width="800"/>
+  <img src="media/Allure-success.png" width="800"/>
 </p>
 
 * Each test contains visual attachments
@@ -135,10 +132,10 @@ This project supports **fully parameterized execution in Jenkins**.
 ### Visual Attachments in Allure
 
 <p align="center">
-  <img src="media/allure-attachments.png" width="800"/>
+  <img src="media/Allure-fail.png" width="800"/>
 </p>
 
-Each test includes:
+Each failed test includes:
 
 * Baseline image
 * Actual screenshot

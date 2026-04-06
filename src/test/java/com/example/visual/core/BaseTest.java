@@ -100,8 +100,7 @@ public abstract class BaseTest {
             case "chromium" -> playwright.chromium();
             case "firefox" -> playwright.firefox();
             default -> throw new IllegalArgumentException(
-                    "Unsupported visual.browser: " + browserName +
-                            ". Supported values: chromium, firefox"
+                    "Unsupported visual.browser: " + browserName
             );
         };
     }

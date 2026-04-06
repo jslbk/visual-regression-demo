@@ -4,9 +4,6 @@ import org.junit.jupiter.api.TestInfo;
 
 public final class SnapshotNameResolver {
 
-    private SnapshotNameResolver() {
-    }
-
     public static String from(TestInfo testInfo, String suffix) {
         String className = testInfo.getTestClass()
                 .map(Class::getSimpleName)

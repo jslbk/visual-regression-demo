@@ -48,9 +48,7 @@ public final class VisualAssertions {
             ));
         }
 
-        Allure.step("Visual comparison passed: " + snapshotName, () -> {
-            AllureAttachments.attachIfExists("Actual", actualPath);
-        });
+        Allure.step(snapshotName, () -> AllureAttachments.attachIfExists("Actual", actualPath));
     }
 
     private static void writeBytes(Path targetPath, byte[] bytes) {

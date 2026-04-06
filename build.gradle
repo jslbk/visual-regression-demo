@@ -79,3 +79,22 @@ tasks.register('installBrowsers', JavaExec) {
 
     args 'install', browser
 }
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+
+    environment 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD', '1'
+    systemProperty 'file.encoding', 'UTF-8'
+
+    systemProperty 'visual.profile', System.getProperty('visual.profile', 'desktop')
+    systemProperty 'visual.browser', System.getProperty('visual.browser', 'chromium')
+    systemProperty 'visual.headless', System.getProperty('visual.headless', 'true')
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+}

@@ -29,7 +29,7 @@ pipeline {
                 ./gradlew clean test \
                   -Dvisual.profile=${params.PROFILE} \
                   -Dvisual.browser=${params.BROWSER} \
-                  -Dvisual.headless=${params.HEADLESS}
+                  -Dvisual.headless=true
               """
             }
         }

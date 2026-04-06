@@ -28,9 +28,6 @@ public final class VisualAssertions {
             writeBytes(baselinePath, actualScreenshotBytes);
 
             Allure.step("Baseline prepared: " + snapshotName, () -> {
-                AllureAttachments.attachText("Visual result",
-                        "Baseline created or refreshed for snapshot: " + snapshotName
-                );
                 AllureAttachments.attachIfExists("Baseline screenshot", baselinePath);
             });
             return;
@@ -50,6 +47,11 @@ public final class VisualAssertions {
                     allowedMismatchPixels
             ));
         }
+
+        Allure.step("Visual comparison passed: " + snapshotName, () -> {
+            AllureAttachments.attachIfExists("Expected", baselinePath);
+            AllureAttachments.attachIfExists("Actual", actualPath);
+        });
     }
 
     private static void writeBytes(Path targetPath, byte[] bytes) {
